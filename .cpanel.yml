@@ -1,0 +1,6 @@
+---
+deployment:
+  tasks:
+    - /bin/cp -R . /home/bpskotam/rtlh-purwantoro.bpskotamalang.id
+    - cd /home/bpskotam/rtlh-purwantoro.bpskotamalang.id && npm install
+    - cd /home/bpskotam/rtlh-purwantoro.bpskotamalang.id && npm run build

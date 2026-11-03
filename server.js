@@ -5,6 +5,7 @@ import app, { setupFrontend } from "./server/app.js";
 const PORT = process.env.PORT || 8000;
 
 async function startServer() {
+<<<<<<< HEAD
   // Pastikan di dalam setupFrontend(), saat NODE_ENV === 'production',
   // dia hanya menjalankan express.static('dist'), BUKAN vite.createServer()!
   await setupFrontend(app);
@@ -15,6 +16,14 @@ async function startServer() {
     console.log(`🌐 Port / Socket   : ${PORT}`);
     console.log(`🗄️ Database MySQL  : ${process.env.DB_NAME || "sipelita_desa"}`);
     console.log("=================================================");
+=======
+  // Hubungkan route frontend/API
+  await setupFrontend(app);
+
+  const server = app.listen(PORT, () => {
+    console.log(`Backend API    : http://localhost:${PORT}`);
+    console.log(`Web Frontend   : http://localhost:5173`);
+>>>>>>> project
   });
 
   const shutdown = (signal) => {

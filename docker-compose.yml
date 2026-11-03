@@ -11,7 +11,7 @@ services:
       MYSQL_PASSWORD: ${DOCKER_DB_PASSWORD:-Sipelita2026!}
     ports:
       # Port MySQL luar diubah ke 3308 (karena 3306 dan 3307 sudah terpakai di laptop)
-      - "3308:3306"
+      - "3336:3306"
     volumes:
       - db_data:/var/lib/mysql
       # Otomatis import skema relasional saat pertama kali container dijalankan

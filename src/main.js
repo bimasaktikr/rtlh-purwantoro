@@ -9,17 +9,19 @@ import { renderSurveyForm, initSurveyFormEvents } from "./components/SurveyForm.
 import { renderDetailModal, initDetailModalEvents } from "./components/DetailModal.js";
 import { renderPrintReport, initPrintReportEvents } from "./components/PrintReport.js";
 import { renderPrintRekapBnba, initPrintRekapBnbaEvents } from "./components/PrintRekapBnba.js";
-import { renderTechnicalGuide } from "./components/TechnicalGuide.js";
+import { renderPrintRekapKinerja, initPrintRekapKinerjaEvents } from "./components/PrintRekapKinerja.js";
 import { renderLoginFasih, bindLoginFasihEvents } from "./components/LoginFasih.js";
 import { renderMemberManagement, initMemberManagementEvents } from "./components/MemberManagement.js";
 import { renderProfile, initProfileEvents } from "./components/Profile.js";
 import { renderDatabaseBackup, initDatabaseBackupEvents } from "./components/DatabaseBackup.js";
+import { renderPetugasAnalysisPage, initPetugasAnalysisPageEvents } from "./components/PetugasAnalysis.js";
 
 // Global App State
 let state = {
   currentRole: storage.getCurrentRole(),
   activeTab: storage.getCurrentRole() === "admin" ? "dashboard" : "new-survey",
   editingSurveyId: null,
+  selectedPetugasFilter: null,
   activeModal: null, // 'detail' | 'print' | 'rekap_bnba' | null
   modalSurveyId: null,
   rekapSelectedRw: "ALL"
@@ -108,7 +110,22 @@ function render() {
       onPrintSurvey: handlePrintSurvey,
       onPrintRekap: handlePrintRekap,
       onNewSurvey: handleNewSurvey,
+      initialPetugasFilter: state.selectedPetugasFilter,
       showToast
+    });
+    state.selectedPetugasFilter = null;
+  } else if (state.activeTab === "kinerja-petugas" && (currentRole === "admin" || currentRole === "pegawai")) {
+    contentContainer.innerHTML = renderPetugasAnalysisPage();
+    initPetugasAnalysisPageEvents(contentContainer, {
+      onViewSurveys: (petugasId, petugasNama) => {
+        state.selectedPetugasFilter = petugasNama || petugasId;
+        state.activeTab = "surveys";
+        render();
+      },
+      onPrintRekap: () => {
+        state.activeModal = "rekap_kinerja";
+        renderModals();
+      }
     });
   } else if (state.activeTab === "new-survey") {
     const editData = state.editingSurveyId ? storage.getSurveyById(state.editingSurveyId) : null;
@@ -126,8 +143,6 @@ function render() {
         render();
       }
     });
-  } else if (state.activeTab === "guide") {
-    contentContainer.innerHTML = renderTechnicalGuide();
   } else if (state.activeTab === "members" && currentRole === "admin") {
     contentContainer.innerHTML = renderMemberManagement();
     initMemberManagementEvents(contentContainer, {
@@ -207,6 +222,14 @@ function renderModals() {
   } else if (state.activeModal === "rekap_bnba") {
     modalRoot.innerHTML = renderPrintRekapBnba(state.rekapSelectedRw || "ALL");
     initPrintRekapBnbaEvents(modalRoot, {
+      onClose: () => {
+        state.activeModal = null;
+        modalRoot.innerHTML = "";
+      }
+    });
+  } else if (state.activeModal === "rekap_kinerja") {
+    modalRoot.innerHTML = renderPrintRekapKinerja();
+    initPrintRekapKinerjaEvents(modalRoot, {
       onClose: () => {
         state.activeModal = null;
         modalRoot.innerHTML = "";

@@ -1,8 +1,6 @@
 import { calculateHousingEligibility } from "./calculator.js";
 
-const API_BASE = (typeof window !== "undefined" && window.location.port === "5173")
-  ? "http://localhost:8000/src/data/api"
-  : "/src/data/api";
+const API_BASE = "/src/data/api";
 const STORAGE_KEY = "sipelita_desa_surveys_v1";
 const ROLE_KEY = "sipelita_desa_role";
 const REGISTERED_USERS_KEY = "sipelita_desa_registered_users_v2";
@@ -10,23 +8,431 @@ const ACTIVE_USER_KEY = "sipelita_desa_active_user_v2";
 
 export const initialRegisteredUsers = [
   {
-    id: "USR-PGW-001",
-    role: "admin",
-    username: "admin",
-    password: "password123",
-    nama: "Devi Zahra Safrida",
-    nip: "19880415 201201 1 002",
-    jabatan: "Kasi Kesejahteraan / Pegawai Kelurahan",
-    desa: "Kelurahan Purwantoro",
-    kecamatan: "Blimbing",
-    kabupaten: "Kota Malang",
-    telepon: "081234567890",
-    email: "zahra@purwantoro.malangkota.go.id",
-    status: "APPROVED",
-    avatar: "🏢",
-    registered_at: "2026-09-01T08:00:00.000Z",
-    approved_at: "2026-09-01T08:00:00.000Z",
-    approved_by: "Sistem Otomatis"
+    "id": "USR-PGW-001",
+    "role": "admin",
+    "username": "admin",
+    "password": "password123",
+    "nama": "admin",
+    "nip": "19880415 201201 1 002",
+    "jabatan": "Kasi Kesejahteraan / Pegawai Kelurahan",
+    "desa": "Kelurahan Purwantoro",
+    "kecamatan": "Blimbing",
+    "kabupaten": "Kota Malang",
+    "telepon": "081234567890",
+    "email": "zahra@purwantoro.malangkota.go.id",
+    "status": "APPROVED",
+    "avatar": "🏢",
+    "registered_at": "2026-09-01T08:00:00.000Z",
+    "approved_at": "2026-09-01T08:00:00.000Z",
+    "approved_by": "Sistem Otomatis"
+  },
+  {
+    "id": "USR-PTG-01",
+    "role": "petugas",
+    "id_petugas": "PETUGAS-01",
+    "nama": "ISMA HARIANTI",
+    "username": "isma.harianti",
+    "password": "password123",
+    "telepon": "081234567890",
+    "rw": "04",
+    "rt": "01, 02, 03",
+    "wilayah_tugas": "RW 04 (RT 01, 02, 03)",
+    "desa": "Kelurahan Purwantoro",
+    "kecamatan": "Blimbing",
+    "kabupaten": "Kota Malang",
+    "status": "APPROVED",
+    "avatar": "👤"
+  },
+  {
+    "id": "USR-PTG-02",
+    "role": "petugas",
+    "id_petugas": "PETUGAS-02",
+    "nama": "AGUSTIN SULIYATI",
+    "username": "agustin.suliyati",
+    "password": "password123",
+    "telepon": "081234567890",
+    "rw": "06",
+    "rt": "01, 02, 06",
+    "wilayah_tugas": "RW 06 (RT 01, 02, 06)",
+    "desa": "Kelurahan Purwantoro",
+    "kecamatan": "Blimbing",
+    "kabupaten": "Kota Malang",
+    "status": "APPROVED",
+    "avatar": "👤"
+  },
+  {
+    "id": "USR-PTG-03",
+    "role": "petugas",
+    "id_petugas": "PETUGAS-03",
+    "nama": "RATNA INDAH SRI NING WULAN",
+    "username": "ratna.indah",
+    "password": "password123",
+    "telepon": "081234567890",
+    "rw": "06",
+    "rt": "03, 04, 05",
+    "wilayah_tugas": "RW 06 (RT 03, 04, 05)",
+    "desa": "Kelurahan Purwantoro",
+    "kecamatan": "Blimbing",
+    "kabupaten": "Kota Malang",
+    "status": "APPROVED",
+    "avatar": "👤"
+  },
+  {
+    "id": "USR-PTG-04",
+    "role": "petugas",
+    "id_petugas": "PETUGAS-04",
+    "nama": "SRI HASTINI",
+    "username": "sri.hastini",
+    "password": "password123",
+    "telepon": "081234567890",
+    "rw": "07",
+    "rt": "01, 02, 03",
+    "wilayah_tugas": "RW 07 (RT 01, 02, 03)",
+    "desa": "Kelurahan Purwantoro",
+    "kecamatan": "Blimbing",
+    "kabupaten": "Kota Malang",
+    "status": "APPROVED",
+    "avatar": "👤"
+  },
+  {
+    "id": "USR-PTG-05",
+    "role": "petugas",
+    "id_petugas": "PETUGAS-05",
+    "nama": "WIWIEK ISTY RAHAJU",
+    "username": "wiwiek.isty",
+    "password": "password123",
+    "telepon": "081234567890",
+    "rw": "07",
+    "rt": "04, 05, 06",
+    "wilayah_tugas": "RW 07 (RT 04, 05, 06)",
+    "desa": "Kelurahan Purwantoro",
+    "kecamatan": "Blimbing",
+    "kabupaten": "Kota Malang",
+    "status": "APPROVED",
+    "avatar": "👤"
+  },
+  {
+    "id": "USR-PTG-06",
+    "role": "petugas",
+    "id_petugas": "PETUGAS-06",
+    "nama": "SUMIARTI",
+    "username": "sumiarti",
+    "password": "password123",
+    "telepon": "081234567890",
+    "rw": "07",
+    "rt": "07, 08, 09",
+    "wilayah_tugas": "RW 07 (RT 07, 08, 09)",
+    "desa": "Kelurahan Purwantoro",
+    "kecamatan": "Blimbing",
+    "kabupaten": "Kota Malang",
+    "status": "APPROVED",
+    "avatar": "👤"
+  },
+  {
+    "id": "USR-PTG-07",
+    "role": "petugas",
+    "id_petugas": "PETUGAS-07",
+    "nama": "SRI UTAMI",
+    "username": "sri.utami",
+    "password": "password123",
+    "telepon": "081234567890",
+    "rw": "07",
+    "rt": "10, 11, 12",
+    "wilayah_tugas": "RW 07 (RT 10, 11, 12)",
+    "desa": "Kelurahan Purwantoro",
+    "kecamatan": "Blimbing",
+    "kabupaten": "Kota Malang",
+    "status": "APPROVED",
+    "avatar": "👤"
+  },
+  {
+    "id": "USR-PTG-08",
+    "role": "petugas",
+    "id_petugas": "PETUGAS-08",
+    "nama": "INDRAWATI",
+    "username": "indrawati",
+    "password": "password123",
+    "telepon": "081234567890",
+    "rw": "07",
+    "rt": "13, 14, 15",
+    "wilayah_tugas": "RW 07 (RT 13, 14, 15)",
+    "desa": "Kelurahan Purwantoro",
+    "kecamatan": "Blimbing",
+    "kabupaten": "Kota Malang",
+    "status": "APPROVED",
+    "avatar": "👤"
+  },
+  {
+    "id": "USR-PTG-09",
+    "role": "petugas",
+    "id_petugas": "PETUGAS-09",
+    "nama": "UMMU MAHDAH",
+    "username": "ummu.mahdah",
+    "password": "password123",
+    "telepon": "081234567890",
+    "rw": "09",
+    "rt": "01, 02, 03",
+    "wilayah_tugas": "RW 09 (RT 01, 02, 03)",
+    "desa": "Kelurahan Purwantoro",
+    "kecamatan": "Blimbing",
+    "kabupaten": "Kota Malang",
+    "status": "APPROVED",
+    "avatar": "👤"
+  },
+  {
+    "id": "USR-PTG-10",
+    "role": "petugas",
+    "id_petugas": "PETUGAS-10",
+    "nama": "NIS ROTUL IAILAH",
+    "username": "nisrotul.iailah",
+    "password": "password123",
+    "telepon": "081234567890",
+    "rw": "09",
+    "rt": "04, 05, 06",
+    "wilayah_tugas": "RW 09 (RT 04, 05, 06)",
+    "desa": "Kelurahan Purwantoro",
+    "kecamatan": "Blimbing",
+    "kabupaten": "Kota Malang",
+    "status": "APPROVED",
+    "avatar": "👤"
+  },
+  {
+    "id": "USR-PTG-11",
+    "role": "petugas",
+    "id_petugas": "PETUGAS-11",
+    "nama": "MUSTOFA",
+    "username": "mustofa",
+    "password": "password123",
+    "telepon": "081234567890",
+    "rw": "10",
+    "rt": "01, 05, 06",
+    "wilayah_tugas": "RW 10 (RT 01, 05, 06)",
+    "desa": "Kelurahan Purwantoro",
+    "kecamatan": "Blimbing",
+    "kabupaten": "Kota Malang",
+    "status": "APPROVED",
+    "avatar": "👤"
+  },
+  {
+    "id": "USR-PTG-12",
+    "role": "petugas",
+    "id_petugas": "PETUGAS-12",
+    "nama": "ILHAM OCTAVIA",
+    "username": "ilham.octavia",
+    "password": "password123",
+    "telepon": "081234567890",
+    "rw": "10",
+    "rt": "02, 03, 04",
+    "wilayah_tugas": "RW 10 (RT 02, 03, 04)",
+    "desa": "Kelurahan Purwantoro",
+    "kecamatan": "Blimbing",
+    "kabupaten": "Kota Malang",
+    "status": "APPROVED",
+    "avatar": "👤"
+  },
+  {
+    "id": "USR-PTG-13",
+    "role": "petugas",
+    "id_petugas": "PETUGAS-13",
+    "nama": "HERDYAN APRIANTO",
+    "username": "herdyan.aprianto",
+    "password": "password123",
+    "telepon": "081234567890",
+    "rw": "10",
+    "rt": "07, 08",
+    "wilayah_tugas": "RW 10 (RT 07, 08)",
+    "desa": "Kelurahan Purwantoro",
+    "kecamatan": "Blimbing",
+    "kabupaten": "Kota Malang",
+    "status": "APPROVED",
+    "avatar": "👤"
+  },
+  {
+    "id": "USR-PTG-14",
+    "role": "petugas",
+    "id_petugas": "PETUGAS-14",
+    "nama": "NANIK NURHIDAYATI",
+    "username": "nanik.nurhidayati",
+    "password": "password123",
+    "telepon": "081234567890",
+    "rw": "11",
+    "rt": "01, 02, 03",
+    "wilayah_tugas": "RW 11 (RT 01, 02, 03)",
+    "desa": "Kelurahan Purwantoro",
+    "kecamatan": "Blimbing",
+    "kabupaten": "Kota Malang",
+    "status": "APPROVED",
+    "avatar": "👤"
+  },
+  {
+    "id": "USR-PTG-15",
+    "role": "petugas",
+    "id_petugas": "PETUGAS-15",
+    "nama": "SUWARSIH",
+    "username": "suwarsih",
+    "password": "password123",
+    "telepon": "081234567890",
+    "rw": "11",
+    "rt": "04, 05",
+    "wilayah_tugas": "RW 11 (RT 04, 05)",
+    "desa": "Kelurahan Purwantoro",
+    "kecamatan": "Blimbing",
+    "kabupaten": "Kota Malang",
+    "status": "APPROVED",
+    "avatar": "👤"
+  },
+  {
+    "id": "USR-PTG-16",
+    "role": "petugas",
+    "id_petugas": "PETUGAS-16",
+    "nama": "ACHMAD NADZIE",
+    "username": "achmad.nadzie",
+    "password": "password123",
+    "telepon": "081234567890",
+    "rw": "15",
+    "rt": "01, 02",
+    "wilayah_tugas": "RW 15 (RT 01, 02)",
+    "desa": "Kelurahan Purwantoro",
+    "kecamatan": "Blimbing",
+    "kabupaten": "Kota Malang",
+    "status": "APPROVED",
+    "avatar": "👤"
+  },
+  {
+    "id": "USR-PTG-17",
+    "role": "petugas",
+    "id_petugas": "PETUGAS-17",
+    "nama": "FARISYATUL MUFRODAH",
+    "username": "farisyatul.mufrodah",
+    "password": "password123",
+    "telepon": "081234567890",
+    "rw": "15",
+    "rt": "03, 04, 10",
+    "wilayah_tugas": "RW 15 (RT 03, 04, 10)",
+    "desa": "Kelurahan Purwantoro",
+    "kecamatan": "Blimbing",
+    "kabupaten": "Kota Malang",
+    "status": "APPROVED",
+    "avatar": "👤"
+  },
+  {
+    "id": "USR-PTG-18",
+    "role": "petugas",
+    "id_petugas": "PETUGAS-18",
+    "nama": "SILVI MUYASAROH",
+    "username": "silvi.muyasaroh",
+    "password": "password123",
+    "telepon": "081234567890",
+    "rw": "15",
+    "rt": "05, 06",
+    "wilayah_tugas": "RW 15 (RT 05, 06)",
+    "desa": "Kelurahan Purwantoro",
+    "kecamatan": "Blimbing",
+    "kabupaten": "Kota Malang",
+    "status": "APPROVED",
+    "avatar": "👤"
+  },
+  {
+    "id": "USR-PTG-19",
+    "role": "petugas",
+    "id_petugas": "PETUGAS-19",
+    "nama": "VEGA YUSRIL",
+    "username": "vega.yusril",
+    "password": "password123",
+    "telepon": "081234567890",
+    "rw": "15",
+    "rt": "07, 08, 09",
+    "wilayah_tugas": "RW 15 (RT 07, 08, 09)",
+    "desa": "Kelurahan Purwantoro",
+    "kecamatan": "Blimbing",
+    "kabupaten": "Kota Malang",
+    "status": "APPROVED",
+    "avatar": "👤"
+  },
+  {
+    "id": "USR-PTG-20",
+    "role": "petugas",
+    "id_petugas": "PETUGAS-20",
+    "nama": "VICKY WAHYU",
+    "username": "vicky.wahyu",
+    "password": "password123",
+    "telepon": "081234567890",
+    "rw": "16",
+    "rt": "01, 02, 03",
+    "wilayah_tugas": "RW 16 (RT 01, 02, 03)",
+    "desa": "Kelurahan Purwantoro",
+    "kecamatan": "Blimbing",
+    "kabupaten": "Kota Malang",
+    "status": "APPROVED",
+    "avatar": "👤"
+  },
+  {
+    "id": "USR-PTG-21",
+    "role": "petugas",
+    "id_petugas": "PETUGAS-21",
+    "nama": "MUHAMMAD NIZAR",
+    "username": "muhammad.nizar",
+    "password": "password123",
+    "telepon": "081234567890",
+    "rw": "16",
+    "rt": "04, 05, 09",
+    "wilayah_tugas": "RW 16 (RT 04, 05, 09)",
+    "desa": "Kelurahan Purwantoro",
+    "kecamatan": "Blimbing",
+    "kabupaten": "Kota Malang",
+    "status": "APPROVED",
+    "avatar": "👤"
+  },
+  {
+    "id": "USR-PTG-22",
+    "role": "petugas",
+    "id_petugas": "PETUGAS-22",
+    "nama": "MOCH. HASANUDIN",
+    "username": "moch.hasanudin",
+    "password": "password123",
+    "telepon": "081234567890",
+    "rw": "16",
+    "rt": "06, 07, 08",
+    "wilayah_tugas": "RW 16 (RT 06, 07, 08)",
+    "desa": "Kelurahan Purwantoro",
+    "kecamatan": "Blimbing",
+    "kabupaten": "Kota Malang",
+    "status": "APPROVED",
+    "avatar": "👤"
+  },
+  {
+    "id": "USR-PTG-23",
+    "role": "petugas",
+    "id_petugas": "PETUGAS-23",
+    "nama": "ENDAH SETYORINI",
+    "username": "endah.setyorini",
+    "password": "password123",
+    "telepon": "081234567890",
+    "rw": "18",
+    "rt": "01, 02, 03",
+    "wilayah_tugas": "RW 18 (RT 01, 02, 03)",
+    "desa": "Kelurahan Purwantoro",
+    "kecamatan": "Blimbing",
+    "kabupaten": "Kota Malang",
+    "status": "APPROVED",
+    "avatar": "👤"
+  },
+  {
+    "id": "USR-PTG-24",
+    "role": "petugas",
+    "id_petugas": "PETUGAS-24",
+    "nama": "SULISTIO RINI",
+    "username": "sulistio.rini",
+    "password": "password123",
+    "telepon": "081234567890",
+    "rw": "18",
+    "rt": "04, 05, 06",
+    "wilayah_tugas": "RW 18 (RT 04, 05, 06)",
+    "desa": "Kelurahan Purwantoro",
+    "kecamatan": "Blimbing",
+    "kabupaten": "Kota Malang",
+    "status": "APPROVED",
+    "avatar": "👤"
   }
 ];
 
@@ -172,6 +578,8 @@ export async function compressBase64Image(base64Str, maxWidth = 640, quality = 0
   });
 }
 
+let memorySurveysCache = null;
+
 export const storage = {
   isSurveyOwnedByPetugas,
   isDraftOwnedByUser,
@@ -179,10 +587,18 @@ export const storage = {
 
   // 1. Data Survei
   getSurveys() {
+    if (Array.isArray(memorySurveysCache) && memorySurveysCache.length > 0) {
+      return memorySurveysCache;
+    }
     try {
       const data = localStorage.getItem(STORAGE_KEY);
       if (!data) return [];
-      return JSON.parse(data);
+      const parsed = JSON.parse(data);
+      if (Array.isArray(parsed)) {
+        memorySurveysCache = parsed;
+        return parsed;
+      }
+      return [];
     } catch (e) {
       console.error("Gagal membaca survei dari localStorage:", e);
       return [];
@@ -194,6 +610,12 @@ export const storage = {
       const res = await fetch(`${API_BASE}/get_surveys.php`);
       const resData = await res.json();
       if (resData.success && Array.isArray(resData.data)) {
+        const localList = this.getSurveys();
+        // Cegah penimpaan jika di server masih kosong (0) tapi di perangkat sudah ada data real (misal 12 data)
+        if (resData.data.length === 0 && localList.length > 0) {
+          console.warn(`Server mengembalikan 0 data, mempertahankan ${localList.length} data survei lokal.`);
+          return localList;
+        }
         this.saveSurveys(resData.data);
         return resData.data;
       }
@@ -201,6 +623,34 @@ export const storage = {
       console.warn("Gagal sinkronisasi survei dari MySQL:", err);
     }
     return this.getSurveys();
+  },
+
+  async pushLocalSurveysToDB() {
+    const list = this.getSurveys();
+    if (!list || list.length === 0) return { successCount: 0, failedCount: 0, total: 0, errors: [] };
+    let successCount = 0;
+    let failedCount = 0;
+    const errors = [];
+    for (const item of list) {
+      try {
+        const response = await fetch(`${API_BASE}/save_survey.php`, {
+          method: "POST",
+          headers: { "Content-Type": "application/json" },
+          body: JSON.stringify(item)
+        });
+        const resData = await response.json();
+        if (resData.success) {
+          successCount++;
+        } else {
+          failedCount++;
+          errors.push(`${item.nama_kk || item.id}: ${resData.message}`);
+        }
+      } catch (err) {
+        failedCount++;
+        errors.push(`${item.nama_kk || item.id}: ${err.message}`);
+      }
+    }
+    return { successCount, failedCount, total: list.length, errors };
   },
 
   getNextBnbaNumber() {
@@ -221,10 +671,29 @@ export const storage = {
   },
 
   saveSurveys(surveys) {
+    if (Array.isArray(surveys)) {
+      memorySurveysCache = surveys;
+    }
     try {
       localStorage.setItem(STORAGE_KEY, JSON.stringify(surveys));
     } catch (e) {
-      console.error("Gagal menyimpan ke localStorage:", e);
+      console.warn("Kapasitas localStorage penuh (QuotaExceededError). Mengoptimalkan penyimpanan survei...", e);
+      try {
+        // Buang string foto Base64 berukuran besar dari localStorage (foto asli tetap aman di database server & memory)
+        const lightweight = (surveys || []).map(s => {
+          const clone = { ...s };
+          ['foto_depan', 'foto_dalam', 'foto_atap', 'foto_sanitasi'].forEach(slot => {
+            if (clone[slot] && typeof clone[slot] === 'string' && clone[slot].length > 500) {
+              clone[slot] = ''; // Kosongkan dari localStorage peramban agar kuota 5MB tidak jebol
+            }
+          });
+          return clone;
+        });
+        localStorage.setItem(STORAGE_KEY, JSON.stringify(lightweight));
+        console.log("✓ Berhasil menyimpan versi ringan metadata survei ke localStorage.");
+      } catch (err2) {
+        console.error("Gagal menyimpan ke localStorage bahkan setelah optimasi kuota:", err2);
+      }
     }
   },
 
@@ -308,7 +777,7 @@ export const storage = {
       const msg = err.message || "";
       // Jika terjadi duplikasi NIK atau kesalahan validasi dari server, lemparkan error agar pengguna mengetahui
       if (
-        msg.includes("sudah terdata") || 
+        msg.includes("sudah terdata") ||
         msg.includes("sudah digunakan") ||
         msg.includes("NIK") ||
         msg.includes("basis data") ||
@@ -784,6 +1253,127 @@ export const storage = {
     };
   },
 
+  getPetugasStats() {
+    const list = this.getSurveys();
+    const users = this.getUsers();
+
+    // Ambil semua akun petugas dari data pengguna
+    const petugasUsers = users.filter(u => u.role === 'petugas');
+    const map = new Map();
+
+    // 1. Inisialisasi setiap petugas terdaftar
+    petugasUsers.forEach(u => {
+      const key = (u.nama || u.username || u.id).toLowerCase().trim();
+      map.set(key, {
+        id: u.id,
+        id_petugas: u.id_petugas || u.id,
+        nama: u.nama,
+        username: u.username,
+        rw: u.rw || "-",
+        rt: u.rt || "-",
+        wilayah_tugas: u.wilayah_tugas || (u.rw ? `RW ${u.rw} (RT ${u.rt || '-'})` : "-"),
+        telepon: u.telepon || "-",
+        avatar: u.avatar || "👤",
+        total_survei: 0,
+        terverifikasi: 0,
+        pending: 0,
+        revisi: 0,
+        terakhir_input: null,
+        userRef: u
+      });
+    });
+
+    // 2. Petakan setiap survei ke petugas yang sesuai
+    list.forEach(survey => {
+      let matchedKey = null;
+
+      // Cari petugas terdaftar yang cocok
+      for (const [key, p] of map.entries()) {
+        const u = p.userRef;
+        if (u && isSurveyOwnedByPetugas(survey, u)) {
+          matchedKey = key;
+          break;
+        }
+        // Fallback pencocokan nama
+        const pNama = String(survey.petugas_nama || survey.nama_petugas || "").toLowerCase().trim();
+        const uNama = String(p.nama || "").toLowerCase().trim();
+        if (pNama && uNama && (pNama === uNama || pNama.includes(uNama) || uNama.includes(pNama))) {
+          matchedKey = key;
+          break;
+        }
+      }
+
+      const surveyDate = survey.tanggal_survey || survey.created_at || null;
+      const isVerif = survey.status_verifikasi === 'TERVERIFIKASI';
+      const isRevisi = survey.status_verifikasi === 'BUTUH_REVISI';
+
+      if (matchedKey && map.has(matchedKey)) {
+        const entry = map.get(matchedKey);
+        entry.total_survei++;
+        if (isVerif) entry.terverifikasi++;
+        else if (isRevisi) entry.revisi++;
+        else entry.pending++;
+
+        if (surveyDate) {
+          if (!entry.terakhir_input || new Date(surveyDate) > new Date(entry.terakhir_input)) {
+            entry.terakhir_input = surveyDate;
+          }
+        }
+      } else {
+        // Jika survei dibuat oleh nama petugas yang belum terdaftar di master akun
+        const rawNama = survey.petugas_nama || survey.nama_petugas || "Petugas Lapangan";
+        const key = rawNama.toLowerCase().trim();
+        if (!map.has(key)) {
+          map.set(key, {
+            id: survey.created_by || survey.petugas_id || `PTG-${key}`,
+            id_petugas: survey.petugas_id || "-",
+            nama: rawNama,
+            username: survey.created_by || "-",
+            rw: survey.rw || "-",
+            rt: survey.rt || "-",
+            wilayah_tugas: survey.rw ? `RW ${survey.rw}` : "-",
+            telepon: "-",
+            avatar: "👤",
+            total_survei: 0,
+            terverifikasi: 0,
+            pending: 0,
+            revisi: 0,
+            terakhir_input: null,
+            userRef: null
+          });
+        }
+        const entry = map.get(key);
+        entry.total_survei++;
+        if (isVerif) entry.terverifikasi++;
+        else if (isRevisi) entry.revisi++;
+        else entry.pending++;
+
+        if (surveyDate) {
+          if (!entry.terakhir_input || new Date(surveyDate) > new Date(entry.terakhir_input)) {
+            entry.terakhir_input = surveyDate;
+          }
+        }
+      }
+    });
+
+    const petugasList = Array.from(map.values()).sort((a, b) => {
+      if (b.total_survei !== a.total_survei) return b.total_survei - a.total_survei;
+      return a.nama.localeCompare(b.nama);
+    });
+
+    const activePetugasList = petugasList.filter(p => p.total_survei > 0);
+    const topPetugas = activePetugasList.length > 0 ? activePetugasList[0] : null;
+
+    return {
+      petugasList,
+      activePetugasList,
+      totalPetugasCount: petugasList.length,
+      activePetugasCount: activePetugasList.length,
+      topPetugas,
+      totalSurveys: list.length
+    };
+  },
+
   exportToCSV(customList = null) {
     let list = customList;
     if (!list) {
@@ -957,7 +1547,7 @@ export const storage = {
     } else {
       drafts.unshift(draftItem);
     }
-    
+
     try {
       localStorage.setItem("sipelita_offline_drafts_v1", JSON.stringify(drafts));
     } catch (e) {

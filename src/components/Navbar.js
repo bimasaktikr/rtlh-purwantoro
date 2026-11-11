@@ -11,6 +11,12 @@ export function getTabMetadata(activeTab, role) {
         breadcrumb: "Statistik RTLH",
         category: "Monitoring"
       };
+    case "kinerja-petugas":
+      return {
+        title: "Analisis Hasil Kerja Petugas",
+        breadcrumb: "Kinerja Petugas",
+        category: "Monitoring"
+      };
     case "surveys":
       return {
         title: isPetugas ? "Riwayat Survey Lapangan" : "Data Rumah",
@@ -40,12 +46,6 @@ export function getTabMetadata(activeTab, role) {
         title: "Pencadangan & Sinkronisasi Basis Data",
         breadcrumb: "Backup Data",
         category: "Pemeliharaan"
-      };
-    case "guide":
-      return {
-        title: "Panduan Teknis Standar PUPR & BPS",
-        breadcrumb: "Pedoman Teknis",
-        category: "Informasi"
       };
     case "profile":
       return {
@@ -129,6 +129,10 @@ export function renderSidebar(activeTab) {
               <span class="nav-btn-icon">${icons.clipboard('w-5 h-5')}</span>
               <span class="nav-btn-text">Data Rumah</span>
             </button>
+            <button class="nav-btn ${activeTab === 'kinerja-petugas' ? 'active' : ''}" data-tab="kinerja-petugas">
+              <span class="nav-btn-icon">${icons.users('w-5 h-5')}</span>
+              <span class="nav-btn-text">Kinerja Petugas</span>
+            </button>
             <button class="nav-btn ${activeTab === 'map' ? 'active' : ''}" data-tab="map">
               <span class="nav-btn-icon">${icons.map('w-5 h-5')}</span>
               <span class="nav-btn-text">Peta</span>
@@ -174,11 +178,6 @@ export function renderSidebar(activeTab) {
           <button class="nav-btn ${activeTab === 'backup' ? 'active' : ''}" data-tab="backup">
             <span class="nav-btn-icon">${icons.database('w-5 h-5')}</span>
             <span class="nav-btn-text">Pencadangan Database</span>
-          </button>
-
-          <button class="nav-btn ${activeTab === 'guide' ? 'active' : ''}" data-tab="guide">
-            <span class="nav-btn-icon">${icons.info('w-5 h-5')}</span>
-            <span class="nav-btn-text">Panduan PUPR</span>
           </button>
 
           <button class="nav-btn ${activeTab === 'profile' ? 'active' : ''}" data-tab="profile">

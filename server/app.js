@@ -35,10 +35,15 @@ app.use("/uploads", express.static(uploadsPath, {
   index: false
 }));
 
-// Fallback jika foto fisik belum ada di disk lokal, arahkan ke hosting production online
+// Fallback jika foto fisik belum ada di disk lokal, arahkan ke hosting production online (hanya saat mode development / lokal)
 app.use("/uploads", (req, res) => {
-  const prodUrl = process.env.PRODUCTION_URL || "https://sipelita.bpskotamalang.id";
-  return res.redirect(302, `${prodUrl}/uploads${req.url}`);
+  const host = req.headers.host || "";
+  const isLocal = host.includes("localhost") || host.includes("127.0.0.1") || process.env.NODE_ENV === "development";
+  if (isLocal && !host.includes("bpskotamalang.id")) {
+    const prodUrl = process.env.PRODUCTION_URL || "https://sipelita.bpskotamalang.id";
+    return res.redirect(302, `${prodUrl}/uploads${req.url}`);
+  }
+  return res.status(404).send("File foto tidak ditemukan");
 });
 
 // Request logger (hanya mencatat panggilan API agar terminal tetap rapi)

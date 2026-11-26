@@ -68,6 +68,19 @@ export async function ensureActivityLogsTable() {
         INDEX idx_logs_created (timestamp)
       ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci
     `);
+
+    // Pastikan kolom payload_backup ada jika tabel dibuat dari versi lawas
+    try {
+      const [cols] = await pool.query(`
+        SELECT COLUMN_NAME FROM information_schema.COLUMNS 
+        WHERE TABLE_SCHEMA = DATABASE() AND TABLE_NAME = 'activity_logs' AND COLUMN_NAME = 'payload_backup'
+      `);
+      if (cols.length === 0) {
+        await pool.query("ALTER TABLE activity_logs ADD COLUMN payload_backup LONGTEXT DEFAULT NULL");
+        console.log("[MySQL] ✅ Kolom payload_backup berhasil ditambahkan ke activity_logs.");
+      }
+    } catch (_) {}
+
     console.log("[MySQL] ✅ Tabel activity_logs aktif untuk audit & pemulihan data.");
   } catch (err) {
     console.warn("[MySQL] Gagal inisialisasi activity_logs:", err.message);

@@ -3,6 +3,6 @@ deployment:
   tasks:
     - export DEPLOYPATH=/home/bpskotam/rtlh-purwantoro.bpskotamalang.id
     - /bin/mkdir -p $DEPLOYPATH
-    - /bin/cp -R package.json package-lock.json src public $DEPLOYPATH/
+    - /bin/cp -R package.json package-lock.json src public server server.js vite.config.js index.html $DEPLOYPATH/
     - cd $DEPLOYPATH && npm install
     - cd $DEPLOYPATH && npm run build

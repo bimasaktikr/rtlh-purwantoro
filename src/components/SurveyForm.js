@@ -871,12 +871,8 @@ export function initSurveyFormEvents(container, { onSaveSuccess, onCancel }) {
       data.jumlah_jiwa = Number(data.jumlah_jiwa) || 1;
       data.jumlah_lansia_balita = Number(data.jumlah_lansia_balita) || 0;
       data.lama_tinggal = Number(data.lama_tinggal) || 1;
-      if (data.luas_bangunan !== undefined && data.luas_bangunan !== null && data.luas_bangunan !== "") {
-        data.luas_bangunan = Number(data.luas_bangunan);
-      }
-      if (data.usia !== undefined && data.usia !== null && data.usia !== "") {
-        data.usia = Number(data.usia);
-      }
+      data.luas_bangunan = (data.luas_bangunan !== undefined && data.luas_bangunan !== null && data.luas_bangunan !== "") ? Number(data.luas_bangunan) : null;
+      data.usia = (data.usia !== undefined && data.usia !== null && data.usia !== "") ? Number(data.usia) : null;
 
       // Pastikan rw dan rt tidak hilang jika select dalam keadaan disabled/styled
       const rwSelect = form.querySelector('[name="rw"]');

@@ -537,25 +537,22 @@ export function isSurveyOwnedByPetugas(surveyItem, user) {
   }
 
   // ATURAN 4: KECOCOKAN NAMA SURVEYOR
-  if (pNama && uNama && pNama !== "petugas" && pNama !== "petugas lapangan") {
+  const isGenericOrEmpty = !pNama || pNama === "petugas" || pNama === "petugas lapangan" || pNama === "-" || pNama === "null";
+  if (!isGenericOrEmpty) {
     if (isPetugasNameMatch(pNama, uNama)) return true;
+    // Jika nama surveyor sudah jelas terisi nama petugas lain, tolak mutlak!
+    return false;
   }
 
   // ATURAN 5: PENCOCOKAN RT PENUGASAN DALAM 1 RW
-  // Jika nama petugas kosong atau default 'Petugas Lapangan', cocokkan RT penugasan
+  // Hanya berlaku jika nama petugas di survei masih kosong / default 'Petugas Lapangan'
   if (user.rw && surveyItem.rw) {
     const uRw = String(user.rw).replace(/\D/g, '').padStart(2, '0');
     const sRw = String(surveyItem.rw).replace(/\D/g, '').padStart(2, '0');
     if (uRw === sRw && user.rt && surveyItem.rt) {
       const uRts = String(user.rt).split(',').map(t => t.replace(/\D/g, '').padStart(2, '0')).filter(Boolean);
       const sRt = String(surveyItem.rt).replace(/\D/g, '').padStart(2, '0');
-      const isGenericOrEmpty = !pNama || pNama === "petugas" || pNama === "petugas lapangan" || pNama === "-" || pNama === "null";
-      if (isGenericOrEmpty && uRts.includes(sRt)) return true;
-
-      // Khusus kolaborasi keluarga di RW 16 (Muhammad Nizar Bustomi & Vicky Wahyu)
-      const isRw16Family = (uNama.includes("vick") || uNama.includes("nizar")) &&
-        (pNama.includes("vick") || pNama.includes("nizar"));
-      if (isRw16Family && uRw === "16") return true;
+      if (uRts.includes(sRt)) return true;
     }
   }
 

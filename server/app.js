@@ -35,6 +35,12 @@ app.use("/uploads", express.static(uploadsPath, {
   index: false
 }));
 
+// Fallback jika foto fisik belum ada di disk lokal, arahkan ke hosting production online
+app.use("/uploads", (req, res) => {
+  const prodUrl = process.env.PRODUCTION_URL || "https://sipelita.bpskotamalang.id";
+  return res.redirect(302, `${prodUrl}/uploads${req.url}`);
+});
+
 // Request logger (hanya mencatat panggilan API agar terminal tetap rapi)
 app.use((req, res, next) => {
   const start = Date.now();

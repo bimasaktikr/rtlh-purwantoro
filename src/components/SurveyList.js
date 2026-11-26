@@ -176,7 +176,7 @@ export function initSurveyListEvents(container, { onSelectSurvey, onEditSurvey, 
     filterPetugas.innerHTML = html;
 
     if (initialPetugasFilter) {
-      const matchOpt = Array.from(filterPetugas.options).find(opt => 
+      const matchOpt = Array.from(filterPetugas.options).find(opt =>
         opt.value === initialPetugasFilter || opt.text.toLowerCase().includes(initialPetugasFilter.toLowerCase())
       );
       if (matchOpt) {
@@ -333,7 +333,7 @@ export function initSurveyListEvents(container, { onSelectSurvey, onEditSurvey, 
           checkOfflineDraftsBanner();
           renderRows();
         }
-      }).catch(() => {});
+      }).catch(() => { });
     }
   }
 
@@ -399,26 +399,10 @@ export function initSurveyListEvents(container, { onSelectSurvey, onEditSurvey, 
         const targetUser = storage.getUsers().find(u => (u.nama || "").toLowerCase().trim() === targetNama);
 
         const isMatch = (targetUser && isSurveyOwnedByPetugas(item, targetUser)) ||
-                        itemPetugasNama === targetNama ||
-                        isPetugasNameMatch(itemPetugasNama, targetNama);
+          itemPetugasNama === targetNama ||
+          isPetugasNameMatch(itemPetugasNama, targetNama);
 
-        // Jika nama di survei belum terisi, cek wilayah penugasan RW & RT petugas
-        let rwMatch = false;
-        if (!isMatch && item.rw && targetUser && targetUser.rw) {
-          const sRw = String(item.rw).replace(/\D/g, "").padStart(2, "0");
-          const uRw = String(targetUser.rw).replace(/\D/g, "").padStart(2, "0");
-          if (sRw === uRw) {
-            if (item.rt && targetUser.rt) {
-              const uRts = String(targetUser.rt).split(",").map(t => t.replace(/\D/g, "").padStart(2, "0")).filter(Boolean);
-              const sRt = String(item.rt).replace(/\D/g, "").padStart(2, "0");
-              if (uRts.includes(sRt)) rwMatch = true;
-            } else {
-              rwMatch = true;
-            }
-          }
-        }
-
-        if (!isMatch && !rwMatch) {
+        if (!isMatch) {
           return false;
         }
       }
@@ -551,6 +535,8 @@ export function initSurveyListEvents(container, { onSelectSurvey, onEditSurvey, 
                 <img src="${item.foto_depan}" 
                      class="table-avatar-img" 
                      alt="Foto ${item.nama_kk}"
+                     loading="lazy"
+                     onerror="this.onerror=null; if(this.getAttribute('src') && this.getAttribute('src').startsWith('/uploads/') && !this.src.includes('sipelita.bpskotamalang.id')) { this.src='https://sipelita.bpskotamalang.id' + this.getAttribute('src'); } else { this.parentElement.innerHTML='<div style=\'width:40px;height:40px;border-radius:var(--radius-md);background:var(--gray-200);display:flex;align-items:center;justify-content:center;color:var(--dark-500);flex-shrink:0;\'><svg style=\'width:16px;height:16px;\' viewBox=\'0 0 24 24\' fill=\'none\' stroke=\'currentColor\' stroke-width=\'2\'><path d=\'M3 9l9-7 9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z\'></path></svg></div>'; }"
                 />
               ` : `
                 <div style="width:40px; height:40px; border-radius:var(--radius-md); background:var(--gray-200); display:flex; align-items:center; justify-content:center; color:var(--dark-500); flex-shrink:0;">

@@ -56,7 +56,7 @@ export function renderSurveyForm(initialData = null) {
         <input type="hidden" name="created_by" value="${initialData?.created_by || currentUser.id || ''}">
         <input type="hidden" name="petugas_nama" value="${initialData?.petugas_nama || currentUser.nama}">
         <input type="hidden" name="petugas_id" value="${initialData?.petugas_id || currentUser.id_petugas || 'ADM-01'}">
-        <input type="hidden" name="tanggal_survey" value="${initialData?.tanggal_survey || new Date().toISOString().slice(0, 10)}">
+        <input type="hidden" name="tanggal_survey" value="${initialData?.tanggal_survey || (() => { const d = new Date(); return `${d.getFullYear()}-${String(d.getMonth() + 1).padStart(2, '0')}-${String(d.getDate()).padStart(2, '0')}`; })()}">
 
         <div class="wizard-body">
           ${renderStep1(initialData, isAdmin, currentUser, bnbaValue)}

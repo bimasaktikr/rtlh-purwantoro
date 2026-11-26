@@ -139,7 +139,8 @@ export function renderDatabaseBackup() {
 
       </div>
 
-      <!-- SECTION LOG AKTIVITAS PETUGAS & AUDIT TRAIL (UNTUK CEK GAGAL INPUT / PULIHKAN DATA HILANG) -->
+      ${!isPetugas ? `
+      <!-- SECTION LOG AKTIVITAS PETUGAS & AUDIT TRAIL (KHUSUS ADMIN / PEGAWAI) -->
       <div class="card" style="border: 1px solid var(--gray-200); box-shadow: var(--shadow-sm); padding: 1.5rem; margin-top: 0.5rem;">
         <div style="display: flex; justify-content: space-between; align-items: center; flex-wrap: wrap; gap: 1rem; margin-bottom: 1rem;">
           <div>
@@ -178,6 +179,7 @@ export function renderDatabaseBackup() {
           </table>
         </div>
       </div>
+      ` : ''}
 
     </div>
   `;
@@ -518,14 +520,16 @@ export function initDatabaseBackupEvents(container, { showToast, onStateChange }
     }
   }
 
-  loadActivityLogs();
+  if (!isPetugas) {
+    loadActivityLogs();
 
-  if (btnRefreshLogs) {
-    btnRefreshLogs.addEventListener("click", () => loadActivityLogs());
-  }
-  if (filterLogNik) {
-    filterLogNik.addEventListener("keyup", (e) => {
-      if (e.key === "Enter") loadActivityLogs();
-    });
+    if (btnRefreshLogs) {
+      btnRefreshLogs.addEventListener("click", () => loadActivityLogs());
+    }
+    if (filterLogNik) {
+      filterLogNik.addEventListener("keyup", (e) => {
+        if (e.key === "Enter") loadActivityLogs();
+      });
+    }
   }
 }

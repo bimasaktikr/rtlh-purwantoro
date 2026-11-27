@@ -2,7 +2,7 @@ import express from "express";
 import multer from "multer";
 import { ZipArchive } from "archiver";
 import AdmZip from "adm-zip";
-import pool from "../db.js";
+import pool, { standardizeAllSurveyIds } from "../db.js";
 
 const router = express.Router();
 const upload = multer({
@@ -465,6 +465,13 @@ async function handleRestore(req, res) {
 
       await pool.query("SET FOREIGN_KEY_CHECKS = 1");
 
+      // Otomatis standarkan seluruh ID survei ke format resmi SRV-YYYY-XXXX pasca-impor
+      try {
+        await standardizeAllSurveyIds(pool);
+      } catch (normErr) {
+        console.warn("[Restore] Gagal menstandarkan ID survei pasca-restore:", normErr.message);
+      }
+
       const [survCount] = await pool.query("SELECT COUNT(*) as cnt FROM surveys");
       const [usrCount] = await pool.query("SELECT COUNT(*) as cnt FROM users");
 
@@ -530,6 +537,13 @@ async function handleRestore(req, res) {
 
         await connection.commit();
         connection.release();
+
+        // Otomatis standarkan seluruh ID survei ke format resmi SRV-YYYY-XXXX pasca-impor
+        try {
+          await standardizeAllSurveyIds(pool);
+        } catch (normErr) {
+          console.warn("[Restore] Gagal menstandarkan ID survei pasca-restore:", normErr.message);
+        }
 
         return res.json({
           success: true,

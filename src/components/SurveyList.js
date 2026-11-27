@@ -536,7 +536,7 @@ export function initSurveyListEvents(container, { onSelectSurvey, onEditSurvey, 
                      class="table-avatar-img" 
                      alt="Foto ${item.nama_kk}"
                      loading="lazy"
-                     onerror="this.onerror=null; if(this.getAttribute('src') && this.getAttribute('src').startsWith('/uploads/') && !this.src.includes('sipelita.bpskotamalang.id')) { this.src='https://sipelita.bpskotamalang.id' + this.getAttribute('src'); } else { this.parentElement.innerHTML='<div style=\'width:40px;height:40px;border-radius:var(--radius-md);background:var(--gray-200);display:flex;align-items:center;justify-content:center;color:var(--dark-500);flex-shrink:0;\'><svg style=\'width:16px;height:16px;\' viewBox=\'0 0 24 24\' fill=\'none\' stroke=\'currentColor\' stroke-width=\'2\'><path d=\'M3 9l9-7 9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z\'></path></svg></div>'; }"
+                     onerror="window.__handleImgError(this, false)"
                 />
               ` : `
                 <div style="width:40px; height:40px; border-radius:var(--radius-md); background:var(--gray-200); display:flex; align-items:center; justify-content:center; color:var(--dark-500); flex-shrink:0;">

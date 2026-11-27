@@ -28,6 +28,30 @@ let state = {
 };
 
 // Toast notification helper
+// Global Helper Penanganan Gambar Lapangan (Auto Fallback ke Server Hosting jika di Komputer Lokal)
+window.__handleImgError = function(img, isDetail = false) {
+  if (!img) return;
+  const rawSrc = img.getAttribute("src") || "";
+  if (!img.dataset.retried && rawSrc.startsWith("/uploads/")) {
+    img.dataset.retried = "1";
+    img.src = "https://sipelita.bpskotamalang.id" + rawSrc;
+    return;
+  }
+  img.onerror = null;
+  img.style.display = "none";
+  if (img.parentElement) {
+    const fallback = document.createElement("div");
+    if (isDetail) {
+      fallback.style.cssText = "width:100%;height:135px;display:flex;flex-direction:column;align-items:center;justify-content:center;background:var(--gray-100);color:var(--dark-500);border-radius:var(--radius-md);";
+      fallback.innerHTML = `<svg style="width:24px;height:24px;" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M3 9l9-7 9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"></path></svg><span style="font-size:0.72rem;font-weight:600;margin-top:0.35rem;">Belum Ada Foto</span>`;
+    } else {
+      fallback.style.cssText = "width:40px;height:40px;border-radius:var(--radius-md);background:var(--gray-200);display:flex;align-items:center;justify-content:center;color:var(--dark-500);flex-shrink:0;";
+      fallback.innerHTML = `<svg style="width:18px;height:18px;" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M3 9l9-7 9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"></path></svg>`;
+    }
+    img.parentElement.appendChild(fallback);
+  }
+};
+
 export function showToast(message, type = "success") {
   const container = document.getElementById("toast-root");
   if (!container) return;

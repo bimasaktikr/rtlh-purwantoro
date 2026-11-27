@@ -186,6 +186,10 @@ export function renderDatabaseBackup() {
 }
 
 export function initDatabaseBackupEvents(container, { showToast, onStateChange } = {}) {
+  const currentUser = storage.getCurrentUser();
+  const currentRole = storage.getCurrentRole();
+  const isPetugas = currentRole === "petugas" || currentUser?.role === "petugas";
+
   const statSurveys = container.querySelector("#stat-total-surveys");
   const statUsers = container.querySelector("#stat-total-users");
   const statRtrw = container.querySelector("#stat-total-rtrw");

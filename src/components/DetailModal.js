@@ -161,7 +161,7 @@ export function renderDetailModal(survey) {
               <!-- 1. Foto Tampak Depan -->
               <div class="detail-photo-card" data-full-src="${survey.foto_depan || ''}" data-title="1. Tampak Depan Bangunan Rumah" style="border-radius:var(--radius-md); overflow:hidden; border:1.5px solid var(--gray-200); background:var(--gray-50); cursor:pointer; position:relative; transition:transform 0.15s, box-shadow 0.15s;">
                 ${survey.foto_depan && !survey.foto_depan.includes('sample-images') ? `
-                  <img src="${survey.foto_depan}" style="width:100%; height:135px; object-fit:cover; display:block;" alt="Tampak Depan" />
+                  <img src="${survey.foto_depan}" style="width:100%; height:135px; object-fit:cover; display:block;" alt="Tampak Depan" onerror="window.__handleImgError(this, true)" />
                   <div style="position:absolute; top:6px; right:6px; background:rgba(15,23,42,0.7); color:white; font-size:0.65rem; padding:2px 7px; border-radius:10px; backdrop-filter:blur(3px);">🔍 Klik Zoom</div>
                 ` : `
                   <div style="width:100%; height:135px; display:flex; flex-direction:column; align-items:center; justify-content:center; background:var(--gray-100); color:var(--dark-500);">
@@ -175,7 +175,7 @@ export function renderDetailModal(survey) {
               <!-- 2. Foto Dinding & Lantai -->
               <div class="detail-photo-card" data-full-src="${survey.foto_dalam || ''}" data-title="2. Dinding & Lantai Interior" style="border-radius:var(--radius-md); overflow:hidden; border:1.5px solid var(--gray-200); background:var(--gray-50); cursor:pointer; position:relative; transition:transform 0.15s, box-shadow 0.15s;">
                 ${survey.foto_dalam && !survey.foto_dalam.includes('sample-images') ? `
-                  <img src="${survey.foto_dalam}" style="width:100%; height:135px; object-fit:cover; display:block;" alt="Dinding & Lantai Interior" />
+                  <img src="${survey.foto_dalam}" style="width:100%; height:135px; object-fit:cover; display:block;" alt="Dinding & Lantai Interior" onerror="window.__handleImgError(this, true)" />
                   <div style="position:absolute; top:6px; right:6px; background:rgba(15,23,42,0.7); color:white; font-size:0.65rem; padding:2px 7px; border-radius:10px; backdrop-filter:blur(3px);">🔍 Klik Zoom</div>
                 ` : `
                   <div style="width:100%; height:135px; display:flex; flex-direction:column; align-items:center; justify-content:center; background:var(--gray-100); color:var(--dark-500);">
@@ -189,7 +189,7 @@ export function renderDetailModal(survey) {
               <!-- 3. Foto Atap & Rangka Struktur -->
               <div class="detail-photo-card" data-full-src="${survey.foto_atap || ''}" data-title="3. Rangka Atap & Konstruksi" style="border-radius:var(--radius-md); overflow:hidden; border:1.5px solid var(--gray-200); background:var(--gray-50); cursor:pointer; position:relative; transition:transform 0.15s, box-shadow 0.15s;">
                 ${survey.foto_atap && !survey.foto_atap.includes('sample-images') ? `
-                  <img src="${survey.foto_atap}" style="width:100%; height:135px; object-fit:cover; display:block;" alt="Rangka Atap" />
+                  <img src="${survey.foto_atap}" style="width:100%; height:135px; object-fit:cover; display:block;" alt="Rangka Atap" onerror="window.__handleImgError(this, true)" />
                   <div style="position:absolute; top:6px; right:6px; background:rgba(15,23,42,0.7); color:white; font-size:0.65rem; padding:2px 7px; border-radius:10px; backdrop-filter:blur(3px);">🔍 Klik Zoom</div>
                 ` : `
                   <div style="width:100%; height:135px; display:flex; flex-direction:column; align-items:center; justify-content:center; background:var(--gray-100); color:var(--dark-500);">
@@ -203,7 +203,7 @@ export function renderDetailModal(survey) {
               <!-- 4. Foto Toilet & Sanitasi -->
               <div class="detail-photo-card" data-full-src="${survey.foto_sanitasi || ''}" data-title="4. Fasilitas Jamban & Sanitasi" style="border-radius:var(--radius-md); overflow:hidden; border:1.5px solid var(--gray-200); background:var(--gray-50); cursor:pointer; position:relative; transition:transform 0.15s, box-shadow 0.15s;">
                 ${survey.foto_sanitasi && !survey.foto_sanitasi.includes('sample-images') ? `
-                  <img src="${survey.foto_sanitasi}" style="width:100%; height:135px; object-fit:cover; display:block;" alt="Sanitasi / Toilet" />
+                  <img src="${survey.foto_sanitasi}" style="width:100%; height:135px; object-fit:cover; display:block;" alt="Sanitasi / Toilet" onerror="window.__handleImgError(this, true)" />
                   <div style="position:absolute; top:6px; right:6px; background:rgba(15,23,42,0.7); color:white; font-size:0.65rem; padding:2px 7px; border-radius:10px; backdrop-filter:blur(3px);">🔍 Klik Zoom</div>
                 ` : `
                   <div style="width:100%; height:135px; display:flex; flex-direction:column; align-items:center; justify-content:center; background:var(--gray-100); color:var(--dark-500);">
@@ -573,9 +573,20 @@ export function initDetailModalEvents(container, survey, { onClose, onPrint, onE
 
   function openLightbox(src, title) {
     if (!lightboxModal || !src) return;
-    lightboxImg.src = src;
+    let targetSrc = src;
+    if (targetSrc.startsWith("/uploads/") && (window.location.hostname === "localhost" || window.location.hostname === "127.0.0.1")) {
+      lightboxOpenRaw.href = "https://sipelita.bpskotamalang.id" + targetSrc;
+    } else {
+      lightboxOpenRaw.href = targetSrc;
+    }
+    lightboxImg.onerror = function() {
+      if (!this.dataset.retried && this.getAttribute("src")?.startsWith("/uploads/")) {
+        this.dataset.retried = "1";
+        this.src = "https://sipelita.bpskotamalang.id" + this.getAttribute("src");
+      }
+    };
+    lightboxImg.src = targetSrc;
     lightboxTitle.textContent = title || "Dokumentasi Foto Lapangan";
-    lightboxOpenRaw.href = src;
     lightboxModal.style.display = "flex";
   }
 

@@ -184,8 +184,15 @@ export async function ensureStatusVerifikasiColumn() {
   }
 }
 
+let isStandardizing = false;
+
 // Otomatis standarkan format ID survei ke format resmi SRV-YYYY-XXXX (4 digit berurutan)
 export async function standardizeAllSurveyIds(targetPool = pool) {
+  if (isStandardizing) {
+    console.log("[Migrasi ID] Standardisasi ID sedang berjalan di proses lain, menunggu...");
+    return { count: 0, updated: 0, in_progress: true };
+  }
+  isStandardizing = true;
   try {
     const [tables] = await targetPool.query("SHOW TABLES LIKE 'surveys'");
     if (tables.length === 0) return { count: 0, updated: 0 };
@@ -235,9 +242,10 @@ export async function standardizeAllSurveyIds(targetPool = pool) {
 
     try {
       // Tahap 1: Rename ke ID sementara untuk mencegah tabrakan unique key
-      for (const u of updates) {
+      for (let i = 0; i < updates.length; i++) {
+        const u = updates[i];
         if (u.oldId !== u.newId) {
-          const tempId = `TEMP-${Date.now()}-${Math.random().toString(36).slice(2, 8)}`;
+          const tempId = `TEMP-${Date.now()}-${i}-${Math.random().toString(36).slice(2, 6)}`;
           await targetPool.query("UPDATE surveys SET id = ? WHERE id = ?", [tempId, u.oldId]);
           await targetPool.query("UPDATE survey_photos SET survey_id = ? WHERE survey_id = ?", [tempId, u.oldId]);
           await targetPool.query("UPDATE survey_verifications SET survey_id = ? WHERE survey_id = ?", [tempId, u.oldId]);
@@ -268,6 +276,8 @@ export async function standardizeAllSurveyIds(targetPool = pool) {
   } catch (err) {
     console.warn("[Migrasi ID] Lewati normalisasi ID survei:", err.message);
     return { count: 0, updated: 0, error: err.message };
+  } finally {
+    isStandardizing = false;
   }
 }
 
